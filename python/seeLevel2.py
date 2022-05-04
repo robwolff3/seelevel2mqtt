@@ -22,7 +22,9 @@ SeeLevelSelectPin = Pin(SeeLevelSelectGPIO, Pin.OUT)
 SeeLevelResponsePin = Pin(SeeLevelResponseGPIO, Pin.IN)
 
 # calibration data for each tank
-SensorCal = { 0:[], 1:[], 2:[] }
+# Start with calibration data set to 1 to see output when the tank is full
+# Set calibration data to output when tank is full
+SensorCal = { 0:[1], 1:[1], 2:[1] }
 
 # de-select all SeeLevel sensors
 SeeLevelSelectPin.off()
@@ -139,7 +141,9 @@ def decodeTankLevel(sensorData, calibrationData):
         if tankLevel > 100: tankLevel = 100
         #print("short level: "+str(sensorData[0]/256.0*100))
     else:
-        tankLevel = -1      # TBD
+        # calibration data is the sum of the sensorData when the tank is full
+        tankLevel = (sum(sensorData[0:])/calibrationData[0])*100
+        # tankLevel = -1      # TBD
 
     return tankLevel
 
