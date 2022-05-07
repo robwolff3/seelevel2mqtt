@@ -34,7 +34,7 @@ SeeLevelSelectPin.off()
 def powerupsensors():
     # raise power on the SeeLevel bus
     SeeLevelSelectPin.on()
-    stime.sleep(2.5 / 1000)  # wait until sensors power up
+    stime.sleep(1.8 / 1000)  # wait until sensors power up 2.5
 
 
 def powerdownsensors():
@@ -47,9 +47,9 @@ def selectseelevel(sensornum):
     # pulse the bus "n" times to address sensor #n (n=0, 1, 2, ...)
     for dummy in range(sensornum + 1):
         SeeLevelSelectPin.off()
-        stime.sleep(85 / 1000000)  # adjust to show 85 us pulse on oscilloscope
+        stime.sleep(60 / 1000000)  # 85 adjust to show 85 us pulse on oscilloscope
         SeeLevelSelectPin.on()
-        stime.sleep(290 / 1000000)
+        stime.sleep(180 / 1000000) # 290
     return
 
 
@@ -69,8 +69,8 @@ def pulsesin(num_pulses):
         while SeeLevelResponsePin.value:  # wait for next pulse
             # if time_out():return pulse_widths
             pass
-            print("While loop completed")
-            print("We got a pulse?")
+#            print("While loop completed")
+#            print("We got a pulse?")
 
         print("Start datetime.now")
         start = datetime.now()
@@ -205,7 +205,7 @@ print('Starting powerupsensors function')
 powerupsensors()
 print('powerupsensors function executed')
 print('Starting readtanklevel function on 0')
-fresh_level = readtanklevel(0)
+#fresh_level = readtanklevel(0)
 print('readtanklevel function executed on 0')
 print('Starting readtanklevel function on 1')
 grey_level = readtanklevel(1)
