@@ -55,6 +55,8 @@ def selectseelevel(sensornum):
 
 # my version of the pulseio.PulseIn method from CircuitPython
 def pulsesin(num_pulses):
+
+    print(num_pulses)
     pulse_widths = bytearray(num_pulses)
     #    value_method = SeeLevelResponsePin.value    # cache method calls to improve timing accuracy
 
@@ -62,27 +64,39 @@ def pulsesin(num_pulses):
 #        # fail if we don't see any pulse activity within 10 milliseconds
 #        return diff_us(time_us(), start) > 10000
 
-    print("Starting while loop")
+    print("for i in range(num_pulses)")
     for i in range(num_pulses):
-        print("for i in range num_pulses")
+        print("for ", i, " in range num_pulses")
+
         print("Starting while loop")
-        while SeeLevelResponsePin.value:  # wait for next pulse
+        value = SeeLevelResponsePin.value
+        while value :  # wait for next pulse
             # if time_out():return pulse_widths
+
+            value = SeeLevelResponsePin.value
+            print(value)
             pass
 #            print("While loop completed")
 #            print("We got a pulse?")
 
         print("Start datetime.now")
         start = datetime.now()
+        print("start = ", start)
+
         print("Starting while not loop")
-        while not SeeLevelResponsePin.value:  # measure negative pulse width
+        value = SeeLevelResponsePin.value
+        while not value:  # measure negative pulse width
             # if time_out(): return pulse_widths
+            value = SeeLevelResponsePin.value
+            print(value)
             pass
         print("End datetime.now")
         end = datetime.now()
+        print("end = ", end)
 
         # pulse_widths.append(diff_us(end,start))
         pulse_widths[i] = (end - start).microseconds  # diff_us(end,start)
+        print(pulse_widths)
     return pulse_widths
 
 
