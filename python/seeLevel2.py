@@ -176,18 +176,33 @@ def readtanklevel(sensorid):
                 base_seg -= 1
             else:
                 break
-        byte_checksum = (sum(slbytes[2:base_seg + 1]) - 2) % 256
-        if byte_checksum - slbytes[1] != 0:
-            print(byte_checksum)
-            print("***checksum error!" + str(slbytes[1]))
-            checksum_errs += 1
-        else:
+
+        check_sum = slbytes[1]
+        byte_sum = sum(slbytes[2:base_seg + 1])
+        # byte_checksum = (sum(slbytes[2:base_seg + 1]) - 2) % 256
+
+        if (byte_sum == 0 & check_sum == 254) | (byte_sum == 1 & check_sum == 255) | (byte_sum % 256) > 0 & (byte_sum % 256) == (check_sum + 2):
+            
             # convert data bytes to a tank level
             ba = bytearray(slbytes[2:base_seg + 1])
             if ba[1] == 0:
                 ba[0] = 0
             tanklevel = decodetanklevel(ba, SensorCal[sensorid])
+        else:
+            print((byte_sum % 256) - 2 )
+            print("***checksum error!" + str(slbytes[1]))
+            checksum_errs += 1
 
+        # if byte_checksum - slbytes[1] != 0:
+        #     print(byte_checksum)
+        #     print("***checksum error!" + str(slbytes[1]))
+        #     checksum_errs += 1
+        # else:
+        #     # convert data bytes to a tank level
+        #     ba = bytearray(slbytes[2:base_seg + 1])
+        #     if ba[1] == 0:
+        #         ba[0] = 0
+            # tanklevel = decodetanklevel(ba, SensorCal[sensorid])
     return tanklevel
 
 
